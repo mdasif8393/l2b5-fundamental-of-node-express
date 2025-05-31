@@ -18,3 +18,4 @@ schoolBell.on("broken", () => {
 
 schoolBell.emit("ring");
 schoolBell.emit("broken");
+
