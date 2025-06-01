@@ -1,8 +1,25 @@
 import express, { Application, Request, Response } from "express";
-const app: Application = express();
+import fs from "fs";
+import path from "path";
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
+const app: Application = express();
+app.use(express.json());
+
+console.log(__dirname);
+const filePath = path.join(__dirname, "../../db/todo.json");
+
+// app.get("/", (req: Request, res: Response) => {
+//   res.send("Welcome to ToDos app");
+// });
+
+app.get("/todos", (req: Request, res: Response) => {
+  const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+  res.json(data);
+});
+
+app.post("/todos/create-todo", (req: Request, res: Response) => {
+  const { title, body } = req.body;
+  console.log(title, body);
 });
 
 export default app;
