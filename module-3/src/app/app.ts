@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import path from "path";
 import todosRouter from "./todos/todos.routes";
 
@@ -10,9 +10,16 @@ const userRouter = express.Router();
 app.use("/todos", todosRouter);
 app.use("/users", userRouter);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Todos app");
-});
+app.get(
+  "/",
+  (req: Request, res: Response, next: NextFunction) => {
+    console.log("I am custom middleware");
+    next();
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    res.send("Welcome to Todos app");
+  }
+);
 
 export default app;
 
