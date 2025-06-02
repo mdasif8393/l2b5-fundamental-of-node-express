@@ -5,19 +5,25 @@ import path from "path";
 const app: Application = express();
 app.use(express.json());
 
-console.log(__dirname);
+const todosRouter = express.Router();
+app.use("/todos", todosRouter);
+
 const filePath = path.join(__dirname, "../../db/todo.json");
+
+todosRouter.get("/all-todos", (req: Request, res: Response) => {
+  const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+
+  res.json({
+    message: "From Todos Router",
+    data,
+  });
+});
 
 // app.get("/", (req: Request, res: Response) => {
 //   res.send("Welcome to ToDos app");
 // });
 
-app.get("/todos", (req: Request, res: Response) => {
-  const data = fs.readFileSync(filePath, { encoding: "utf-8" });
-  res.json(data);
-});
-
-app.post("/todos/create-todo", (req: Request, res: Response) => {
+todosRouter.post("/todos/create-todo", (req: Request, res: Response) => {
   const { title, body } = req.body;
   console.log(title, body);
 });
